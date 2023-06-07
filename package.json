@@ -1,0 +1,18 @@
+{
+  "name": "dheo-product-expert",
+  "version": "1.0.0",
+  "description": "AI assistant of product expert",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Sarfaraz Ahmed",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "express": "^4.18.2",
+    "pg": "^8.11.0"
+  }
+}

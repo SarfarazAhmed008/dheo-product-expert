@@ -2,7 +2,7 @@ module.exports = {
     facebook: {
         appId: '',
         appSecret: '',
-        pageId: '',
+        pageId: '121983707551966',
         accessToken: ''
     },
     postgres: {

@@ -16,6 +16,7 @@ const getPageMessages = async (accessToken, pageId) => {
     `https://graph.facebook.com/v13.0/${pageId}/conversations?fields=messages&access_token=${accessToken}`
   );
 
+  console.log(response);
   return response.data.data;
 };
 

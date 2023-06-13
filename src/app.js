@@ -7,7 +7,7 @@ const databaseRoutes = require('./routes/databaseRoutes');
 app.use('/facebook', facebookRoutes);
 app.use('/database', databaseRoutes);
 
-const port = 3000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

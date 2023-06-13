@@ -1,15 +1,17 @@
+require('dotenv').config();
+
 module.exports = {
     facebook: {
-        appId: '',
-        appSecret: '',
-        pageId: '121983707551966',
-        accessToken: ''
+        appId: process.env.APP_ID,
+        appSecret: process.env.APP_SECRET,
+        pageId: process.env.PAGE_ID,
+        accessToken: process.env.ACCESS_TOKEN
     },
     postgres: {
-        host: 'localhost',
-        port: '5432',
-        database: 'dheo',
-        user: 'sarfaraz',
-        password: '1234'
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        database: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD
     }
 };

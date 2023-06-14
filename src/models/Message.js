@@ -1,7 +1,8 @@
 class Message {
-    constructor(id, text) {
+    constructor(id, messageText, createdTime) {
       this.id = id;
-      this.text = text;
+      this.messageText = messageText;
+      this.createdTime = createdTime;
     }
   }
   

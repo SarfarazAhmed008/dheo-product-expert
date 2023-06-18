@@ -15,7 +15,7 @@ const fetchAndStoreMessages = async () => {
 
     for (const messageData of conversationData) {
       //add created time
-      const message = new Message(messageData.id, messageData.message.text);
+      const message = new Message(messageData.id, messageData.message.text); // add time and sender
       await messageRepository.create(message);
     }
   }

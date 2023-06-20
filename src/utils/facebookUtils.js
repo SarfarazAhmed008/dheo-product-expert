@@ -13,10 +13,12 @@ const getAccessToken = async () => {
 
 const getPageMessages = async (accessToken, pageId) => {
   const response = await axios.get(
-    `https://graph.facebook.com/v13.0/${pageId}/conversations?fields=messages&access_token=${accessToken}`
+    `https://graph.facebook.com/v16.0/${pageId}/conversations?fields=messages&access_token=${accessToken}`
+
+    // 'https://graph.facebook.com/v16.0/$pageId/conversations?access_token=$accessToken'
   );
 
-  console.log(response);
+  console.log(response.data.data);
   return response.data.data;
 };
 

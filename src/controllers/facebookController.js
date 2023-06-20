@@ -10,17 +10,17 @@ const fetchAndStoreMessages = async () => {
 
   const messages = await getPageMessages(accessToken, pageId);
 
-  for (const conversation of messages) {
-    const { data: conversationData } = conversation.messages;
+  // for (const conversation of messages) {
+  //   const { data: conversationData } = conversation.messages;
 
-    for (const messageData of conversationData) {
-      //add created time
-      const message = new Message(messageData.id, messageData.message.text); // add time and sender
-      await messageRepository.create(message);
-    }
-  }
+  //   for (const messageData of conversationData) {
+  //     //add created time
+  //     const message = new Message(messageData.id, messageData.message.text); // add time and sender
+  //     await messageRepository.create(message);
+  //   }
+  // }
 
-  console.log('Messages stored successfully!');
+  // console.log('Messages stored successfully!');
 };
 
 module.exports = { fetchAndStoreMessages };

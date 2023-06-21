@@ -6,13 +6,13 @@ const pool = new Pool(config.postgres);
 
 class MessageRepository {
   async create(message) {
-    const query = 'INSERT INTO messages (id, text, time, sender) VALUES ($1, $2, $3, $4) RETURNING *';
-    const values = [message.id, message.messageText, message.createdTime, message.sender];
+    const query = 'INSERT INTO messages (id, text) VALUES ($1, $2) RETURNING *';
+    const values = [message.id, message.messageText];
 
     const client = await pool.connect();
     try {
       const result = await client.query(query, values);
-      return new Message(result.rows[0].id, result.rows[0].messageText, result.rows[0].createdTime, result.rows[0].sender);
+      return new Message(result.rows[0].id, result.rows[0].messageText);
     } finally {
       client.release();
     }
@@ -24,7 +24,7 @@ class MessageRepository {
     const client = await pool.connect();
     try {
       const result = await client.query(query);
-      return result.rows.map(row => new Message(row.id, row.messageText, row.createdTime, row.sender));
+      return result.rows.map(row => new Message(row.id, row.messageText));
     } finally {
       client.release();
     }

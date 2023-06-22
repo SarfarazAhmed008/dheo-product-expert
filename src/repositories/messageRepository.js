@@ -6,25 +6,26 @@ const pool = new Pool(config.postgres);
 
 class MessageRepository {
   async create(message) {
-    const query = 'INSERT INTO messages (id, text) VALUES ($1, $2) RETURNING *';
-    const values = [message.id, message.messageText];
+    const query = 'INSERT INTO messages (message_id, message_text, from_message, to_message, created_time, conversation_id) SELECT $1, $2, $3, $4, $5, $6 WHERE NOT EXISTS (SELECT message_id FROM messages WHERE message_id = $1)';
+    
+    const values = [message.messageId, message.messageText, message.fromMessage, message.toMessage, message.createdTime, message.conversationId];
 
     const client = await pool.connect();
     try {
-      const result = await client.query(query, values);
-      return new Message(result.rows[0].id, result.rows[0].messageText);
+      await client.query(query, values);
     } finally {
       client.release();
     }
   }
 
-  async findAll() {
-    const query = 'SELECT * FROM messages';
+  async findAll(conversationId) {
+    const query = 'SELECT * FROM messages WHERE conversation_id = $1';
+    const value = [conversationId];
 
     const client = await pool.connect();
     try {
-      const result = await client.query(query);
-      return result.rows.map(row => new Message(row.id, row.messageText));
+      const result = await client.query(query, value);
+      return result.rows.map(row => new Message(row.message_id, row.message_text, row.from_message, row.to_message, row.created_time, row.conversation_id));
     } finally {
       client.release();
     }

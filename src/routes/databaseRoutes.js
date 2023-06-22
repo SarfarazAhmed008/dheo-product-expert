@@ -1,8 +1,8 @@
-const express = require('express');
-const databaseController = require('../controllers/databaseController');
+// const express = require('express');
+// const databaseController = require('../controllers/databaseController');
 
-const router = express.Router();
+// const router = express.Router();
 
-router.get('/messages', databaseController.getMessages);
+// router.get('/messages', databaseController.getConversations);
 
-module.exports = router;
+// module.exports = router;

@@ -30,6 +30,19 @@ class MessageRepository {
       client.release();
     }
   }
+
+  async findById(messageId) {
+    const query = 'SELECT * FROM messages WHERE message_id = $1';
+    const value = [messageId];
+
+    const client = await pool.connect();
+    try {
+      const result = await client.query(query, value);
+      return result.rows.map(row => new Message(row.message_id, row.message_text, row.from_message, row.to_message, row.created_time, row.conversation_id));
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = MessageRepository;

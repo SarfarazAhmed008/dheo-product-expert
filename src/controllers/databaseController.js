@@ -25,4 +25,9 @@ const getMessages = async (req, res) => {
   }
 };
 
-module.exports = { getConversations, getMessages };
+const getMessageById = async (messageId) => {
+  const message = await messageRepository.findById(messageId);
+  return message;
+};
+
+module.exports = { getConversations, getMessages, getMessageById };

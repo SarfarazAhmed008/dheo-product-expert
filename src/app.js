@@ -2,10 +2,10 @@ const express = require('express');
 const app = express();
 const config = require('./config');
 const facebookRoutes = require('./routes/facebookRoutes');
-const databaseRoutes = require('./routes/databaseRoutes');
+const openAIRoutes = require('./routes/openAIRoutes');
 
 app.use('/api/facebook', facebookRoutes);
-// app.use('/api/database', databaseRoutes);
+app.use('/api/openai', openAIRoutes);
 
 const port = process.env.PORT;
 app.listen(port, () => {

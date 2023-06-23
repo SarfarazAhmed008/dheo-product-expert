@@ -48,4 +48,15 @@ const fetchConversationMessages = async (req, res) => {
   }
 };
 
-module.exports = { fetchAndStoreConversations, fetchConversationMessages };
+const fetchLatestConversations = async (req, res) => {
+  try {
+    const conversations = await databaseController.getLatestConversations();
+    res.status(200).json(conversations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+module.exports = { fetchAndStoreConversations, fetchConversationMessages, fetchLatestConversations };

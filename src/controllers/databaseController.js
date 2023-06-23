@@ -30,4 +30,9 @@ const getMessageById = async (messageId) => {
   return message;
 };
 
-module.exports = { getConversations, getMessages, getMessageById };
+const getLatestConversations = async () => {
+  const conversations = await conversationRepository.findAllLatest();
+  return conversations;
+};
+
+module.exports = { getConversations, getMessages, getMessageById, getLatestConversations };

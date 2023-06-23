@@ -10,22 +10,25 @@ const conversationRepository = new ConversationRepository();
 const messageRepository = new MessageRepository();
 
 const fetchAndStoreConversations = async (req, res) => {
-  const { accessToken, pageId } = config.facebook;
   try {
-    const conversations = await getPageConversations(accessToken, pageId);
-
-    for (const conversation of conversations) {
-      const conversationItem = new Conversation(conversation.id, conversation.link, 
-        conversation.message_count, conversation.updated_time);
-      await conversationRepository.create(conversationItem);
-    }
-    console.log('Conversation stored successfully!');
+    await fetchAndStoreConversationsAction();
     await databaseController.getConversations(req, res);
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
+};
+
+const fetchAndStoreConversationsAction = async() => {
+  const { accessToken, pageId } = config.facebook;
+  const conversations = await getPageConversations(accessToken, pageId);
+
+  for (const conversation of conversations) {
+    const conversationItem = new Conversation(conversation.id, conversation.link, 
+      conversation.message_count, conversation.updated_time);
+    await conversationRepository.create(conversationItem);
+  }
+  console.log('Conversation updated successfully!');
 };
 
 const fetchConversationMessages = async (req, res) => {
@@ -40,7 +43,7 @@ const fetchConversationMessages = async (req, res) => {
         messageData.to.data[0].name, messageData.created_time, conversationId);
       await messageRepository.create(message);
     }
-    console.log('Messages stored successfully!');
+    console.log('Messages updated successfully!');
     await databaseController.getMessages(req, res);
   } catch (error) {
     console.error(error);
@@ -50,6 +53,7 @@ const fetchConversationMessages = async (req, res) => {
 
 const fetchLatestConversations = async (req, res) => {
   try {
+    await fetchAndStoreConversationsAction();
     const conversations = await databaseController.getLatestConversations();
     res.status(200).json(conversations);
   } catch (error) {

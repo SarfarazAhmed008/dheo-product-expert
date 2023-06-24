@@ -12,7 +12,7 @@ const gptResponse = async (messageContents) => {
             model: "gpt-3.5-turbo",
             // messages: [{ role: "user", content: messageText }],
             messages: messageContents,
-            max_tokens: 1000,
+            max_tokens: 700,
             // temperature: 0.7
         });
         return chatCompletion.data.choices[0].message.content;

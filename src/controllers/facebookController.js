@@ -40,10 +40,10 @@ const fetchConversationMessages = async (req, res) => {
   
     for (const messageData of messageListData) {
       const message = new Message(messageData.id, messageData.message, messageData.from.name, 
-        messageData.to.data[0].name, messageData.created_time, conversationId);
+        messageData.to.data[0].name, messageData.created_time, conversationId, messageData.from.id, messageData.to.data[0].id);
       await messageRepository.create(message);
     }
-    console.log('Messages updated successfully!');
+    console.log('Messages stored successfully!');
     await databaseController.getMessages(req, res);
   } catch (error) {
     console.error(error);
@@ -52,14 +52,44 @@ const fetchConversationMessages = async (req, res) => {
 };
 
 const fetchLatestConversations = async (req, res) => {
+  const { pageId } = config.facebook;
   try {
     await fetchAndStoreConversationsAction();
-    const conversations = await databaseController.getLatestConversations();
-    res.status(200).json(conversations);
+    const conversationList = await databaseController.getLatestConversations();
+    //response time
+    for(const conversationItem of conversationList){
+      const messageList = await databaseController.getMessagesAction(conversationItem.conversationId);
+      var customerMessageCreatedTime;
+      var pageMessageCreatedTime
+      if(messageList[0].toMessageId == pageId){
+        //client message
+        customerMessageCreatedTime = new Date(messageList[0].createdTime).getTime();
+        for(const messageItem of messageList){
+          if(messageItem.fromMessageId == pageId){
+            //page response
+            pageMessageCreatedTime = new Date(messageItem.createdTime).getTime();
+            break;
+          }
+        }
+        const timeDifferenceInSeconds = (pageMessageCreatedTime - customerMessageCreatedTime) / 1000;
+        conversationItem.responseTimeDifference = formatTime(timeDifferenceInSeconds);
+      }else{
+        //page first - do nothing
+      }
+    }
+    res.status(200).json(conversationList);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
+};
+
+const formatTime = (seconds) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  return `${hours}:${minutes}:${remainingSeconds}`;
 };
 
 

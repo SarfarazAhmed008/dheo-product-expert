@@ -17,12 +17,17 @@ const getConversations = async (req, res) => {
 const getMessages = async (req, res) => {
   try {
     const { conversationId } = req.params;
-    const messages = await messageRepository.findAll(conversationId);
+    const messages = await getMessagesAction(conversationId);
     res.status(200).json(messages);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
+};
+
+const getMessagesAction = async (conversationId) => {
+  const messages = await messageRepository.findAll(conversationId);
+  return messages;
 };
 
 const getMessageById = async (messageId) => {
@@ -35,4 +40,4 @@ const getLatestConversations = async () => {
   return conversations;
 };
 
-module.exports = { getConversations, getMessages, getMessageById, getLatestConversations };
+module.exports = { getConversations, getMessages, getMessagesAction, getMessageById, getLatestConversations };

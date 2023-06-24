@@ -18,7 +18,7 @@ class ConversationRepository {
   }
 
   async findAll() {
-    const query = 'SELECT * FROM conversations';
+    const query = 'SELECT * FROM conversations ORDER BY updated_time DESC';
 
     const client = await pool.connect();
     try {
@@ -30,7 +30,7 @@ class ConversationRepository {
   }
 
   async findAllLatest() {
-    const query = "SELECT * FROM conversations WHERE updated_time::timestamp with time zone >= NOW() - INTERVAL '24 hours'";
+    const query = "SELECT * FROM conversations WHERE updated_time::timestamp with time zone >= NOW() - INTERVAL '24 hours' ORDER BY updated_time DESC";
 
     const client = await pool.connect();
     try {

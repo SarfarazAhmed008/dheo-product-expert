@@ -6,11 +6,12 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const gptResponse = async (messageText) => {
+const gptResponse = async (messageContents) => {
     try {
         const chatCompletion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: messageText }],
+            // messages: [{ role: "user", content: messageText }],
+            messages: messageContents,
             max_tokens: 1000,
             // temperature: 0.7
         });

@@ -1,4 +1,5 @@
 const { getPageConversations, getConversationMessages } = require('../utils/facebookUtils');
+const { formatTime, isWithin24Hours } = require('../utils/timeUtils');
 const Conversation = require('../models/Conversation');
 const Message = require('../models/Message');
 const ConversationRepository = require('../repositories/conversationRepository');
@@ -57,8 +58,14 @@ const fetchLatestConversations = async (req, res) => {
     await fetchAndStoreConversationsAction();
     const conversationList = await databaseController.getLatestConversations();
     //response time
+    const newConversationList = [];
     for(const conversationItem of conversationList){
       const messageList = await databaseController.getMessagesAction(conversationItem.conversationId);
+      //new conversation list
+      if(isWithin24Hours(messageList[0].createdTime)){
+        newConversationList.push(conversationItem);
+      }
+
       var customerMessageCreatedTime;
       var pageMessageCreatedTime
       if(messageList[0].toMessageId == pageId){
@@ -77,20 +84,11 @@ const fetchLatestConversations = async (req, res) => {
         //page first - do nothing
       }
     }
-    res.status(200).json(conversationList);
+    res.status(200).json({"all_list" : conversationList, "new_list" : newConversationList});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-
-const formatTime = (seconds) => {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-
-  return `${hours}:${minutes}:${remainingSeconds}`;
-};
-
 
 module.exports = { fetchAndStoreConversations, fetchConversationMessages, fetchLatestConversations };

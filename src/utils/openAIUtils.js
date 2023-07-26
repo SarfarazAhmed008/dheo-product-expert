@@ -9,7 +9,8 @@ const openai = new OpenAIApi(configuration);
 const gptResponse = async (messageContents) => {
     try {
         const chatCompletion = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
+            // model: "gpt-3.5-turbo",
+            model: "gpt-3.5-turbo-16k",
             // messages: [{ role: "user", content: messageText }],
             messages: messageContents,
             max_tokens: 700,

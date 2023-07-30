@@ -3,6 +3,7 @@ const app = express();
 const config = require('./config');
 const facebookRoutes = require('./routes/facebookRoutes');
 const openAIRoutes = require('./routes/openAIRoutes');
+const configRoutes = require('./routes/configRoutes');
 
 
 app.use(function(req, res, next) {
@@ -13,6 +14,7 @@ app.use(function(req, res, next) {
 });
 app.use('/api/v1/facebook', facebookRoutes);
 app.use('/api/v1/openai', openAIRoutes);
+app.use('/api/v1/setup', configRoutes);
 
 const port = process.env.PORT;
 app.listen(port, () => {

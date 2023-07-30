@@ -4,6 +4,16 @@ const ConversationRepository = require('../repositories/conversationRepository')
 const conversationRepository = new ConversationRepository();
 const messageRepository = new MessageRepository();
 
+const createTables = async (req, res) => {
+  try {
+    
+    res.status(200).json();
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 const getConversations = async (req, res) => {
   try {
     const conversations = await conversationRepository.findAll();
@@ -40,4 +50,4 @@ const getLatestConversations = async () => {
   return conversations;
 };
 
-module.exports = { getConversations, getMessages, getMessagesAction, getMessageById, getLatestConversations };
+module.exports = { getConversations, getMessages, getMessagesAction, getMessageById, getLatestConversations, createTables };

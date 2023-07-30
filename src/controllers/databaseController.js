@@ -1,16 +1,18 @@
 const MessageRepository = require('../repositories/messageRepository');
 const ConversationRepository = require('../repositories/conversationRepository');
+const ConfigRepository = require('../repositories/configRepository');
 
 const conversationRepository = new ConversationRepository();
 const messageRepository = new MessageRepository();
+const configRepository = new ConfigRepository();
 
 const createTables = async (req, res) => {
   try {
-    
-    res.status(200).json();
+    await configRepository.createTables();
+    res.status(200).json({ message: 'Tables created successfully.'});
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Error creating tables.'});
   }
 };
 

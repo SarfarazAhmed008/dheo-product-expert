@@ -8,6 +8,7 @@ module.exports = {
         accessToken: process.env.ACCESS_TOKEN
     },
     postgres: {
+        connectionString: process.env.POSTGRES_URL + "?sslmode=require",
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         database: process.env.DB_NAME,

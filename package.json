@@ -2,9 +2,9 @@
   "name": "dheo-product-expert",
   "version": "1.0.0",
   "description": "AI assistant of product expert",
-  "main": "src/app.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/app.js",
+    "start": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -53,13 +53,25 @@ const fetchConversationMessages = async (req, res) => {
 };
 
 const fetchLatestConversations = async (req, res) => {
-  const { pageId } = config.facebook;
+  const { pageId, accessToken } = config.facebook;
   try {
     await fetchAndStoreConversationsAction();
     const conversationList = await databaseController.getLatestConversations();
+
     //response time
     const newConversationList = [];
     for(const conversationItem of conversationList){
+      //insert all messages for latest conversation
+      const messages = await getConversationMessages(accessToken, conversationItem.conversationId);
+      const { data: messageListData } = messages;
+
+      for (const messageData of messageListData) {
+        const message = new Message(messageData.id, messageData.message, messageData.from.name, 
+          messageData.to.data[0].name, messageData.created_time, conversationItem.conversationId, messageData.from.id, messageData.to.data[0].id);
+        await messageRepository.create(message);
+      }
+
+
       const messageList = await databaseController.getMessagesAction(conversationItem.conversationId);
       //new conversation list
       if(isWithin24Hours(messageList[0].createdTime)){
